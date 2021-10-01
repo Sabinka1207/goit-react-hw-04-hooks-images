@@ -24,19 +24,18 @@ const App = () => {
       const result = await fetchImages(request, page);
       setAllImages((prevState) => [...prevState, ...result.hits]);
       setReqStatus(null);
+      if (page > 1) {
+        console.log("should scroll");
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: "smooth",
+        });
+      }
     }
 
     if (request !== "") {
       setReqStatus("loading");
       getImages();
-    }
-
-    if (page > 1) {
-      console.log("should scroll");
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: "smooth",
-      });
     }
   }, [request, page]);
 
@@ -51,12 +50,6 @@ const App = () => {
 
   const loadMore = () => {
     setPage((s) => s + 1);
-    // if (page > 1) {
-    //   window.scrollTo({
-    //   top: document.documentElement.scrollHeight,
-    //   behavior: "smooth",
-    // });
-    // }
   };
 
   const shouldLoadMore = Boolean(allImages.length);
